@@ -5,7 +5,7 @@
 # Email     	dylan.kreth@utdallas.edu
 
 CXX = g++
-CXXFLAGS = -Wall -Werror
+#CXXFLAGS = -Wall -Werror
 #CPPFLAGS = -I /scratch/perkins/include
 #LDFLAGS = -L /scratch/perkins/lib
 #LDLIBS = -lcdk -lcurses
@@ -27,7 +27,7 @@ OBJS = $(SRCS:cc=o)
 all: $(EXECFILE)
 
 clean:
-	rm -f $(OBJS) *.d* *~ \#* *.o
+	rm -f $(OBJS) *.d* *~ \#* *.o $(EXECFILE)
 deepclean:
 	rm -f $(OBJS) $(EXECFILE) *.d* *~ \#* *.o
 

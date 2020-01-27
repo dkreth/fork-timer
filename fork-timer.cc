@@ -9,14 +9,33 @@
 
 
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
+//#include <fstream>
+//#include <string>
 #include "fork-timer.h"
+
+#include <sys/time.h>
+#include <unistd.h>
 
 using namespace std;
 
 int main() {
   cout << "Hello, World!" << endl;
+  struct timeval startTime;
+  struct timeval endTime;
+  if(!gettimeofday(&startTime, NULL)){
+    cerr << "gettimeofday() returned -1. "
+  }
+  cout << "Start Time: " << startTime.tv_sec << endl;
+  //call fork
+
+
+  //handle parent
+
+  //handle child
+
+  //get end time
+
+  //write results to a csv
+
 
 }

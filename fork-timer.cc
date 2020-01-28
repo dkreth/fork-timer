@@ -21,7 +21,7 @@
 #define DEBUG 0
 #define READ 0
 #define WRITE 1
-#define NUM_RUNS 100
+#define NUM_RUNS 1000
 
 using namespace std;
 

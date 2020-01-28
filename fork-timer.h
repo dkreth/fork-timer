@@ -7,13 +7,9 @@
  * Copyright      2020, All Rights Reserved
  */
 
-
-
 #ifndef __FORKTIMER_H__
 #define __FORKTIMER_H__
 
-
-
+uint64_t convertToMicroseconds(struct timeval time);
 
 #endif /* __FORKTIMER_H__ */
-

@@ -27,24 +27,24 @@ OBJS = $(SRCS:cc=o)
 all: $(EXECFILE)
 
 clean:
-	rm -f $(OBJS) *.d* *~ \#* *.o $(EXECFILE)
+	rm -f $(OBJS) *.d* *~ \#* *.o
 deepclean:
 	rm -f $(OBJS) $(EXECFILE) *.d* *~ \#* *.o
 
-Makefile: $(SRCS:.cc=.d)
+# Makefile: $(SRCS:.cc=.d)
 
-# Pattern for .d files.
-%.d:%.cc
-	@echo Updating .d Dependency File
-	@set -e; rm -f $@; \
-	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+# # Pattern for .d files.
+# %.d:%.cc
+# 	@echo Updating .d Dependency File
+# 	@set -e; rm -f $@; \
+# 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
+# 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+# 	rm -f $@.$$$$
 
 
-# rule for linking objects 
-$(EXECFILE): $(OBJS)
-	$(CXX) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
+# # rule for linking objects 
+# $(EXECFILE): $(OBJS)
+# 	$(CXX) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
 
 
 # Backup Target

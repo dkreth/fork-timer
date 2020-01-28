@@ -61,5 +61,5 @@ backup:	deepclean
 	@echo Done!
 
 
-# Include the dependency files
--include $(SRCS:.cc=.d)
+# uncomment to include the dependency files
+# -include $(SRCS:.cc=.d)

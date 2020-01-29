@@ -50,11 +50,11 @@ int main(int argc, char **argv)
   filestream << "run number, parent duration, child duration" << endl;
   if (argc > 1)
   {
-    numRuns = max((int)stol(argv[1], NULL, 10), MIN_NUM_RUNS); // updates the number of samples to collect, if needed
+    numRuns = max((int)strtol(argv[1], NULL, 10), MIN_NUM_RUNS); // updates the number of samples to collect, if needed
   }
   else
   {
-    numRuns = MIN_NUM_RUNS;
+    numRuns = MIN_NUM_RUNS; //if no extra command line args, use default number of samples (defaults to 1000)
   }
   cout << "Running fork-timer with " << numRuns << " runs." << endl;
 
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 
       write(fd[WRITE], &duration, sizeof(struct timeval)); //send child duration to the parent
       close(fd[READ]); //close pipe when we're done with it
-      return 0; //stop the child. next loop iteration takes place in parent
+      break; //stop the child. next loop iteration takes place in parent
     }
     else //parent process
     {

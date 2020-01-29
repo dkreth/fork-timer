@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 {
   struct timeval startTime;
   struct timeval endTime;
-  int fd[2];
+  int fd[2]; //for pipe
   struct timeval duration;
   struct timeval durationFromChild;
   int *stat_loc;
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     if (DEBUG)
       cout << "Start Time: " << startTime.tv_sec << endl;
 
-    pid_t pid = fork();
+    pid_t pid = fork(); // store the pid returned by fork so we can differentiate between parent and child
 
     //get end time
     if (gettimeofday(&endTime, NULL)) // gettimeofday returns -1 on error
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     if (DEBUG)
     {
-      char output[50];
+      char output[50]; // buffer for printing
       sprintf(output, "fork took %ld sec and %ld us", (long)duration.tv_sec, (long)duration.tv_usec);
       cout << output << endl;
     }
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 
       write(fd[WRITE], &duration, sizeof(struct timeval)); //send child duration to the parent
       close(fd[READ]); //close pipe when we're done with it
-      break; //stop the child. next loop iteration takes place in parent
+      break; //stop the child. next loop iteration takes place ONLY in parent
     }
     else //parent process
     {

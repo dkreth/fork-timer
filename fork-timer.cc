@@ -24,12 +24,6 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#define DEBUG 0
-#define READ 0
-#define WRITE 1
-#define MIN_NUM_RUNS 1000
-#define RESULTS_FILE_NAME "results.csv"
-
 using namespace std;
 
 /***************************************************************************

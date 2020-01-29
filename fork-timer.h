@@ -10,6 +10,6 @@
 #ifndef __FORKTIMER_H__
 #define __FORKTIMER_H__
 
-uint64_t convertToMicroseconds(struct timeval time);
+int convertToMicroseconds(struct timeval time);
 
 #endif /* __FORKTIMER_H__ */

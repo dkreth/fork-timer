@@ -13,13 +13,11 @@
 
 #include <iostream>
 #include <fstream>
-//#include <string>
 #include "fork-timer.h"
 
 #include <sys/time.h>
 #include <unistd.h>
 #include <stdio.h>
-// #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <algorithm>
@@ -53,7 +51,7 @@ int main(int argc, char **argv)
   filestream.close();
   if (argc > 1)
   {
-    numRuns = max((int)stol(argv[1], NULL, 10), MIN_NUM_RUNS);
+    numRuns = max((int)stol(argv[1], NULL, 10), MIN_NUM_RUNS); // updates the number of samples to collect, if needed
   }
   else
   {
@@ -66,12 +64,13 @@ int main(int argc, char **argv)
     //open a pipe for data transfer from child to parent
     if (pipe(fd) == -1) //pipe() returns -1 on error
     {
-      perror("fork"); //TODO
+      cerr << "pipe() returned -1. " << endl;
+      perror("fork");
       exit(EXIT_FAILURE);
     }
 
     // start timer
-    if (gettimeofday(&startTime, NULL))
+    if (gettimeofday(&startTime, NULL)) // gettimeofday returns -1 on error
     {
       cerr << "gettimeofday() returned -1. " << endl;
     }
@@ -81,12 +80,13 @@ int main(int argc, char **argv)
     pid_t pid = fork();
 
     //get end time
-    if (gettimeofday(&endTime, NULL))
+    if (gettimeofday(&endTime, NULL)) // gettimeofday returns -1 on error
     {
       cerr << "gettimeofday() returned -1. " << endl;
     }
 
     timersub(&endTime, &startTime, &duration); // duration = endTime - startTime
+
     if (DEBUG)
     {
       char output[50];
@@ -98,21 +98,20 @@ int main(int argc, char **argv)
     {
       close(fd[READ]); //we don't need the read end of pipe in child
 
-      write(fd[WRITE], &duration, sizeof(struct timeval)); //send child duration to the parent for processing
-      close(fd[READ]);                                     //TODO maybe this will fix fork: Too many open files error
-      return 0;
+      write(fd[WRITE], &duration, sizeof(struct timeval)); //send child duration to the parent
+      close(fd[READ]); //close pipe when we're done with it
+      return 0; //stop the child. next loop iteration takes place in parent
     }
     else //parent process
     {
-      close(fd[WRITE]);                                           //we don't need the write end of pipe in parent
-      waitpid(pid, stat_loc, 0);                                  // wait for child (pid) to finish, and store status info in stat_loc. no special options (0)
+      close(fd[WRITE]); //we don't need the write end of pipe in parent
+      waitpid(pid, stat_loc, 0); // wait for child (pid) to finish, and store status info in stat_loc. no special options (0)
       read(fd[READ], &durationFromChild, sizeof(struct timeval)); //receive pipe from the child
-      close(fd[READ]);
-      // TODO compare results before writing them to a file
-      filestream.open(RESULTS_FILE_NAME, fstream::out | fstream::app);
+      close(fd[READ]); //close pipe when we're done with it
+
+      filestream.open(RESULTS_FILE_NAME, fstream::out | fstream::app); // open the file in output and append mode
       filestream << runCounter << "," << convertToMicroseconds(duration) << "," << convertToMicroseconds(durationFromChild) << endl;
       filestream.close();
-      // TODO why is fork getting a too many open files error
     }
   }
 

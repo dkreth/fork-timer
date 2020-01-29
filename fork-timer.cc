@@ -48,7 +48,6 @@ int main(int argc, char **argv)
   ofstream filestream;
   filestream.open(RESULTS_FILE_NAME);
   filestream << "run number, parent duration, child duration" << endl;
-  filestream.close();
   if (argc > 1)
   {
     numRuns = max((int)stol(argv[1], NULL, 10), MIN_NUM_RUNS); // updates the number of samples to collect, if needed
@@ -109,11 +108,11 @@ int main(int argc, char **argv)
       read(fd[READ], &durationFromChild, sizeof(struct timeval)); //receive pipe from the child
       close(fd[READ]); //close pipe when we're done with it
 
-      filestream.open(RESULTS_FILE_NAME, fstream::out | fstream::app); // open the file in output and append mode
       filestream << runCounter << "," << convertToMicroseconds(duration) << "," << convertToMicroseconds(durationFromChild) << endl;
-      filestream.close();
     }
   }
+
+  filestream.close();
 
   return 0;
 }
